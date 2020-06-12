@@ -16,6 +16,11 @@ export default new Router({
             path: '/contacts',
             name: 'contacts',
             component: (resolve) => require(['@/views/Contacts/Contacts.vue'], resolve),
+        },
+        {
+            path: '/cookie',
+            name: 'cookie',
+            component: (resolve) => require(['@/views/Cookie/index.vue'], resolve),
         }
     ]
 })

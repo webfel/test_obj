@@ -3,7 +3,8 @@
     <h3 id="time" @click="outputDate">{{new Date().toLocaleString()}}</h3>
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/contacts">Contacts</router-link>
+      <router-link to="/contacts">Contacts</router-link> |
+      <router-link to="/cookie">Cookie</router-link>
     </div>
     <router-view/>
   </div>
