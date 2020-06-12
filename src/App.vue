@@ -12,13 +12,16 @@
 <script>
 export default {
   beforeCreate () {
-    console.log('beforeCreate', document.querySelector('#nav'))
+    console.log('beforeCreate:组件创建之前', document.querySelector('#nav'))
+    // 此状态下不可以操作方法  ，执行以下方法控制台会报错
+    // console.log('beforeCreate',this.outputDate())   
   },
   created () {
-    console.log('created', document.querySelector('#nav'))
+    console.log('created：组件创建之后（dom还没渲染，但是课可以操作方法）', document.querySelector('#nav'))
+    this.outputDate()
   },
   mounted () {
-    console.log('mounted', document.querySelector('#nav'))
+    console.log('mounted：组件创建之后，dom渲染之后', document.querySelector('#nav'))
   },
   methods: {
     outputDate () {
