@@ -1,3 +1,4 @@
+<!--cookie存储-->
 <template>
     <div>
         <h4 class="btn" @click="setCookie()">存储cookie</h4>

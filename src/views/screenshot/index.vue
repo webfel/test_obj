@@ -1,3 +1,4 @@
+<!--屏幕截图-->
 <template>
   <div id="nodeBox">
     <img src="https://store.cdn.xu5g.com/avatar.png" />
