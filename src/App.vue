@@ -4,7 +4,9 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/contacts">Contacts</router-link> |
-      <router-link to="/cookie">Cookie</router-link>
+      <router-link to="/cookie">Cookie</router-link> |
+      <router-link to="/screenshot">ScreenShot</router-link>|
+      <router-link to="/tree">Tree</router-link>
     </div>
     <router-view/>
   </div>

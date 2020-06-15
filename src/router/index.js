@@ -21,6 +21,16 @@ export default new Router({
             path: '/cookie',
             name: 'cookie',
             component: (resolve) => require(['@/views/Cookie/index.vue'], resolve),
-        }
+        },
+        {
+            path: '/screenshot',
+            name: 'screenshot',
+            component: (resolve) => require(['@/views/screenshot/index.vue'], resolve),
+        },
+        {
+            path: '/tree',
+            name: 'tree',
+            component: (resolve) => require(['@/views/tree/index.vue'], resolve),
+        },
     ]
 })

@@ -28,6 +28,7 @@ export default {
         setCookie:function(){
             if (!this.name) return this.$message.warning('请先输入要存储的值')
             Cookies.setCookie('name', this.name,15);
+            this.$message.success('cookie存储成功')
             this.name = ''
         },
         //读取cookie
