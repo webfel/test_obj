@@ -6,6 +6,9 @@
         <p>
             处理之后的：{{toTree(this.source)}}
         </p>
+        <p class="tool">
+            注：可百度搜索json解析，将这两个解析后查看效果
+        </p>
     </div>
 </template>
 <script>
@@ -66,3 +69,9 @@
         }
     }
 </script>
+<style>
+    .tool {
+        color: red;
+        font-size: 14px;
+    }
+</style>

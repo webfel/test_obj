@@ -34,7 +34,7 @@ export default {
       context.scale(1, 1);
       html2canvas(document.getElementById("nodeBox"), {
         canvas: canvas2,
-        allowTaint:true, //是否图片跨域
+        // allowTaint:true, //是否图片跨域
       }).then(function(canvas) {
         var blob = that.getBlob(canvas);
         var oMyForm = new FormData();
