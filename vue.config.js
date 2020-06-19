@@ -9,36 +9,40 @@ const DIST_ROOT = 'dist'
 const BASE_URL = '/'
 // 转为CND外链方式的npm包，键名是import的npm包名，键值是该库暴露的全局变量，参考https://webpack.js.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx
 const externals = {
-  'vue': 'Vue',
-  'vue-router': 'VueRouter',
-  'vuex': 'Vuex',
-  'axios': 'axios',
-  'element-ui': 'ELEMENT'
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'axios': 'axios',
+    'element-ui': 'ELEMENT',
+    'vue-antd-ui': 'antd'
 }
 // CDN外链，会插入到index.html中
 const cdn = {
-  // 开发环境
-  dev: {
-    css: [
-      'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-    ],
-    js: []
-  },
-  // 生产环境
-  build: {
-    css: [
-        'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css',
-      'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-    ],
-    js: [
-      'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js',
-      'https://cdn.jsdelivr.net/npm/vue-router@3.0.1/dist/vue-router.min.js',
-      'https://cdn.jsdelivr.net/npm/vuex@3.0.1/dist/vuex.min.js',
-      'https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js',
-      'https://unpkg.com/element-ui/lib/index.js',
-      'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js',
-    ]
-  }
+    // 开发环境
+    dev: {
+        css: [
+            'https://unpkg.com/element-ui/lib/theme-chalk/index.css',
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css'
+        ],
+        js: []
+    },
+    // 生产环境
+    build: {
+        css: [
+            'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css',
+            'https://unpkg.com/element-ui/lib/theme-chalk/index.css',
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css'
+        ],
+        js: [
+            'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js',
+            'https://cdn.jsdelivr.net/npm/vue-router@3.0.1/dist/vue-router.min.js',
+            'https://cdn.jsdelivr.net/npm/vuex@3.0.1/dist/vuex.min.js',
+            'https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js',
+            'https://unpkg.com/element-ui/lib/index.js',
+            'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js',
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.js'
+        ]
+    }
 }
 // 是否使用预渲染
 const productionPrerender = true
@@ -50,117 +54,117 @@ const productionGzip = true
 const productionGzipExtensions = ['js', 'css']
 
 module.exports = {
-  publicPath: BASE_URL,
-  outputDir: DIST_ROOT + BASE_URL, // prerendner会借助一个express服务器来预渲染，改变baseUrl后要保证这个模拟服务器能够找到所需的资源
-  assetsDir: 'static',
-  productionSourceMap: false,
-  devServer: {
-    port: 8080,
-    open: false,
-    // proxy: {
-    //     '/': {
-    //         target: "http://test.api.admin.xu5g.com",
-    //         changeOrigin: true,
-    //         ws: false, // proxy websockets
-    //         pathRewrite: {
-    //             "^/": ''
-    //         }
-    //     }
-    // }
-},
-  configureWebpack: config => {
-    const myConfig = {}
-    if (process.env.NODE_ENV === 'production') {
-      // 1. 生产环境npm包转CDN
-      myConfig.externals = externals
-      // 2. 使用预渲染，在仅加载html和css之后即可显示出基础的页面，提升用户体验，避免白屏
-      myConfig.plugins = []
-      productionPrerender && myConfig.plugins.push(
-        new PrerenderSPAPlugin({
-          staticDir: path.resolve(__dirname, DIST_ROOT), // 作为express.static()中间件的路径
-          outputDir: path.resolve(__dirname, DIST_ROOT + BASE_URL),
-          indexPath: path.resolve(__dirname, DIST_ROOT + BASE_URL + 'index.html'),
-          routes: prerenderRoutes,
-          minify: {
-            collapseBooleanAttributes: true,
-            collapseWhitespace: true,
-            decodeEntities: true,
-            keepClosingSlash: true,
-            sortAttributes: true
-          },
-          postProcess (renderedRoute) {
-            /**
-             * 懒加载模块会自动注入，无需直接通过script标签引入
-             * 而且预渲染的html注入的是modern版本的懒加载模块
-             * 这会导致在低版本浏览器出现报错，需要剔除
-             * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
-             */
-            renderedRoute.html = renderedRoute.html.replace(
-              /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
-              function (target) {
-                console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
-                return ''
-              }
-            )
-            return renderedRoute
-          }
-        })
-      )
-      // 3. 构建时开启gzip，降低服务器压缩对CPU资源的占用，服务器也要相应开启gzip
-      productionGzip && myConfig.plugins.push(
-        new CompressionWebpackPlugin({
-          test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-          threshold: 8192,
-          minRatio: 0.8
-        })
-      )
-    }
-    if (process.env.NODE_ENV === 'development') {
-      /**
-       * 关闭host check，方便使用ngrok之类的内网转发工具
-       */
-      myConfig.devServer = {
-        disableHostCheck: true
-      }
-    }
-    return myConfig
-  },
-  chainWebpack: config => {
-    /**
-     * 删除懒加载模块的prefetch，降低带宽压力
-     * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#prefetch
-     * 而且预渲染时生成的prefetch标签是modern版本的，低版本浏览器是不需要的
-     */
-    config.plugins
-      .delete('prefetch')
-    /**
-     * 添加CDN参数到htmlWebpackPlugin配置中
-     */
-    config
-      .plugin('html')
-      .tap(args => {
+    publicPath: BASE_URL,
+    outputDir: DIST_ROOT + BASE_URL, // prerendner会借助一个express服务器来预渲染，改变baseUrl后要保证这个模拟服务器能够找到所需的资源
+    assetsDir: 'static',
+    productionSourceMap: false,
+    devServer: {
+        port: 8080,
+        open: false,
+        // proxy: {
+        //     '/': {
+        //         target: "http://test.api.admin.xu5g.com",
+        //         changeOrigin: true,
+        //         ws: false, // proxy websockets
+        //         pathRewrite: {
+        //             "^/": ''
+        //         }
+        //     }
+        // }
+    },
+    configureWebpack: config => {
+        const myConfig = {}
         if (process.env.NODE_ENV === 'production') {
-          args[0].cdn = cdn.build
+            // 1. 生产环境npm包转CDN
+            myConfig.externals = externals
+            // 2. 使用预渲染，在仅加载html和css之后即可显示出基础的页面，提升用户体验，避免白屏
+            myConfig.plugins = []
+            productionPrerender && myConfig.plugins.push(
+                new PrerenderSPAPlugin({
+                    staticDir: path.resolve(__dirname, DIST_ROOT), // 作为express.static()中间件的路径
+                    outputDir: path.resolve(__dirname, DIST_ROOT + BASE_URL),
+                    indexPath: path.resolve(__dirname, DIST_ROOT + BASE_URL + 'index.html'),
+                    routes: prerenderRoutes,
+                    minify: {
+                        collapseBooleanAttributes: true,
+                        collapseWhitespace: true,
+                        decodeEntities: true,
+                        keepClosingSlash: true,
+                        sortAttributes: true
+                    },
+                    postProcess(renderedRoute) {
+                        /**
+                         * 懒加载模块会自动注入，无需直接通过script标签引入
+                         * 而且预渲染的html注入的是modern版本的懒加载模块
+                         * 这会导致在低版本浏览器出现报错，需要剔除
+                         * 这并不是一个非常严谨的正则，不适用于使用了 webpackChunkName: "group-foo" 注释的懒加载
+                         */
+                        renderedRoute.html = renderedRoute.html.replace(
+                            /<script[^<]*chunk-[a-z0-9]{8}\.[a-z0-9]{8}.js[^<]*><\/script>/g,
+                            function (target) {
+                                console.log(chalk.bgRed('\n\n剔除的懒加载标签:'), chalk.magenta(target))
+                                return ''
+                            }
+                        )
+                        return renderedRoute
+                    }
+                })
+            )
+            // 3. 构建时开启gzip，降低服务器压缩对CPU资源的占用，服务器也要相应开启gzip
+            productionGzip && myConfig.plugins.push(
+                new CompressionWebpackPlugin({
+                    test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+                    threshold: 8192,
+                    minRatio: 0.8
+                })
+            )
         }
         if (process.env.NODE_ENV === 'development') {
-          args[0].cdn = cdn.dev
+            /**
+             * 关闭host check，方便使用ngrok之类的内网转发工具
+             */
+            myConfig.devServer = {
+                disableHostCheck: true
+            }
         }
-        return args
-      })
-    /**
-     * 无需使用@import在每个scss文件中引入变量或者mixin，也可以避免大量@import导致build变慢
-     * sass-resources-loader 文档链接：https://github.com/shakacode/sass-resources-loader
-     */
-    const oneOfsMap = config.module.rule('scss').oneOfs.store
-    const sassResources = ['color.scss', 'mixin.scss', 'common.scss'] // scss资源文件，可以在里面定义变量，mixin,全局混入样式等
-    oneOfsMap.forEach(item => {
-      item
-        .use('sass-resources-loader')
-        .loader('sass-resources-loader')
-        .options({
-          resources: sassResources.map(file => path.resolve(__dirname, 'src/style/' + file))
+        return myConfig
+    },
+    chainWebpack: config => {
+        /**
+         * 删除懒加载模块的prefetch，降低带宽压力
+         * https://cli.vuejs.org/zh/guide/html-and-static-assets.html#prefetch
+         * 而且预渲染时生成的prefetch标签是modern版本的，低版本浏览器是不需要的
+         */
+        config.plugins
+            .delete('prefetch')
+        /**
+         * 添加CDN参数到htmlWebpackPlugin配置中
+         */
+        config
+            .plugin('html')
+            .tap(args => {
+                if (process.env.NODE_ENV === 'production') {
+                    args[0].cdn = cdn.build
+                }
+                if (process.env.NODE_ENV === 'development') {
+                    args[0].cdn = cdn.dev
+                }
+                return args
+            })
+        /**
+         * 无需使用@import在每个scss文件中引入变量或者mixin，也可以避免大量@import导致build变慢
+         * sass-resources-loader 文档链接：https://github.com/shakacode/sass-resources-loader
+         */
+        const oneOfsMap = config.module.rule('scss').oneOfs.store
+        const sassResources = ['color.scss', 'mixin.scss', 'common.scss'] // scss资源文件，可以在里面定义变量，mixin,全局混入样式等
+        oneOfsMap.forEach(item => {
+            item
+                .use('sass-resources-loader')
+                .loader('sass-resources-loader')
+                .options({
+                    resources: sassResources.map(file => path.resolve(__dirname, 'src/style/' + file))
+                })
+                .end()
         })
-        .end()
-    })
-  }
+    }
 }
