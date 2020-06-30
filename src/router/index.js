@@ -32,5 +32,10 @@ export default new Router({
             name: 'tree',
             component: (resolve) => require(['@/views/tree/index.vue'], resolve),
         },
+        {
+            path: '/map/search',
+            name: 'MapSearch',
+            component: (resolve) => require(['@/views/mapSearch/index.vue'], resolve),
+        }
     ]
 })

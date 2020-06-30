@@ -6,7 +6,8 @@
       <router-link to="/contacts">Contacts</router-link> |
       <router-link to="/cookie">Cookie</router-link> |
       <router-link to="/screenshot">ScreenShot</router-link>|
-      <router-link to="/tree">Tree</router-link>
+      <router-link to="/tree">Tree</router-link>|
+      <router-link to="/map/search">BmapSearch</router-link>
     </div>
     <router-view/>
   </div>
@@ -17,7 +18,7 @@ export default {
   beforeCreate () {
     console.log('beforeCreate:组件创建之前', document.querySelector('#nav'))
     // 此状态下不可以操作方法  ，执行以下方法控制台会报错
-    // console.log('beforeCreate',this.outputDate())   
+    // console.log('beforeCreate',this.outputDate())
   },
   created () {
     console.log('created：组件创建之后（dom还没渲染，但是课可以操作方法）', document.querySelector('#nav'))

@@ -20,7 +20,6 @@ export default {
         else {
             return null;
         }
-
     },
 
     //删除cookies
