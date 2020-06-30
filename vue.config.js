@@ -6,7 +6,7 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin')
 // 存放build结果的文件夹(主要是为了填prerender在配置了baseUrl后带来的坑,下面会说)
 const DIST_ROOT = 'dist'
 // 项目部署在服务器里的绝对路径，默认'/'，参考https://cli.vuejs.org/zh/config/#baseurl
-const BASE_URL = '/'
+const BASE_URL = '/test_obj'
 // 转为CND外链方式的npm包，键名是import的npm包名，键值是该库暴露的全局变量，参考https://webpack.js.org/configuration/externals/#src/components/Sidebar/Sidebar.jsx
 const externals = {
     'vue': 'Vue',
@@ -47,7 +47,7 @@ const cdn = {
 // 是否使用预渲染
 const productionPrerender = true
 // 需要预渲染的路由
-const prerenderRoutes = ['/', '/contacts']
+const prerenderRoutes = []
 // 是否使用gzip
 const productionGzip = true
 // 需要gzip压缩的文件后缀
