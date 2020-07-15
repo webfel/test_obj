@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bmaplib": "^1.0.1",
     "element-ui": "^2.4.8",
     "html2canvas": "^1.0.0-rc.5",
     "vue": "^2.5.17",

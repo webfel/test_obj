@@ -14,7 +14,7 @@ const externals = {
     'vuex': 'Vuex',
     'axios': 'axios',
     'element-ui': 'ELEMENT',
-    'vue-antd-ui': 'antd'
+    'vue-antd-ui': 'antd',
 }
 // CDN外链，会插入到index.html中
 const cdn = {
@@ -22,16 +22,18 @@ const cdn = {
     dev: {
         css: [
             'https://unpkg.com/element-ui/lib/theme-chalk/index.css',
-            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css'
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css',
         ],
-        js: []
+        js: [
+
+        ]
     },
     // 生产环境
     build: {
         css: [
             'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css',
             'https://unpkg.com/element-ui/lib/theme-chalk/index.css',
-            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css'
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.css',
         ],
         js: [
             'https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js',
@@ -40,7 +42,7 @@ const cdn = {
             'https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js',
             'https://unpkg.com/element-ui/lib/index.js',
             'https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js',
-            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.js'
+            'https://unpkg.com/ant-design-vue@1.0.3/dist/antd.min.js',
         ]
     }
 }

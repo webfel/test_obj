@@ -18,14 +18,14 @@
 
 <script>
     import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-
     export default {
         name: 'HelloWorld',
         components: {
-            BaiduMap
+            BaiduMap,
         },
         data() {
             return {
+                BMapLib: '',
                 searchData:[],
                 loading: true,
                 keyword: '',
@@ -46,7 +46,7 @@
                 this.center.lng = 116.404
                 this.center.lat = 39.915
                 this.zoom = 16;
-                this.loading = false
+                this.loading = false;
             },
             // 检索按钮
             searchAddress(){

@@ -7,7 +7,9 @@
       <router-link to="/cookie">Cookie</router-link> |
       <router-link to="/screenshot">ScreenShot</router-link>|
       <router-link to="/tree">Tree</router-link>|
-      <router-link to="/map/search">BmapSearch</router-link>
+      <router-link to="/map/search">BmapSearch</router-link>|
+      <router-link to="/map/draw">BmapDraw</router-link>|
+      <router-link to="/map/draw1">BmapDraw</router-link>
     </div>
     <router-view/>
   </div>

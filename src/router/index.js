@@ -36,6 +36,16 @@ export default new Router({
             path: '/map/search',
             name: 'MapSearch',
             component: (resolve) => require(['@/views/mapSearch/index.vue'], resolve),
+        },
+        {
+            path: '/map/draw',
+            name: 'MapDraw',
+            component: (resolve) => require(['@/views/mapSearch/draw.vue'], resolve),
+        },
+        {
+            path: '/map/draw1',
+            name: 'MapDraw',
+            component: (resolve) => require(['@/views/mapSearch/draw1.vue'], resolve),
         }
     ]
 })
